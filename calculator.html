@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Calculator</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="main-section">
+      <div class = "lightBlock">
+      </div>
+      <div class = "lighter">
+        <div class="blank">
+          <!--blank space above image-->
+        </div>
+    
+        <div class="title">
+            <h1>Growing On PAR</h1>
+            <div class="imgContainer">
+             <img src="/images/invisiblePlant.png">
+            </div>
+            <div class="tagLine">
+              
+                <h2>Your easy guide to aquatic plants</h2>
+                <p>...And More</p>
+              
+            </div>
+        </div>
+      </div>
+
+      <div class = "darker">
+        <div class="blank">
+          <!--blank space above image-->
+        </div>
+        <div class="middle-Section">
+          <div class="navContainer">
+          <nav>
+            <div class="navs">
+              <a href="/index.html">Home</a>
+              <a href="#">About</a>
+              <a href="#" style=font-weight:bold>Calculator</a>
+            </div>
+          </nav>
+          </div>
+          <div class="form">
+            <form class="formItself" onsubmit="getData()">
+            <label>What to grow?</label> 
+            <button type="submit" name="submit">Calculate</button>
+            <br>
+            <br>
+            <h2 style="color:black;margin-left:13vw">Tank Size?</h2>
+					<input type="text" name="tank" placeholder="Tank Size" class="input-form" id="tank" required="true">
+					<br>
+            <h2 style="color:black;margin-left:12.5vw">Light model</h2>
+					<select name="lights" value="Light Type" class="input-form" id="lights">
+						<option value="none" selected disabled hidden>Light Type</option>
+						<option value="BeamsWork DA FSPEC">BeamsWork DA FSPEC</option>
+						<option value="BeamsWork EA FSPEC">BeamsWork EA FSPEC2</option>
+						<option value="NICREW SkyLED">NICREW SkyLED</option>
+            <option value="NICREW ClassicLED">NICREW ClassicLED</option>
+            <option value="ONF Flat Nano">ONF Flat Nano</option>
+            <option value="Chihiros RGB">Chihiros RGB</option>
+            <option value="Aqueon Clip-On LED">Aqueon Clip-On LED</option>
+            <option value="Fluval Plant Nano">Fluval Plant Nano</option>
+            <option value="Twinstar E-series">Twinstar E-seriesD</option>
+            <option value="Twinstar S-series">Twinstar S-series</option>
+            <option value="Twinstar B-series">Twinstar B-series</option>
+					</select> 
+					<br>
+            <h2 style="color:black;margin-left:12vw"> Fish? (Optional)</h2>
+					<input type="text" name="fish" placeholder="Fish Type" class="input-form">
+            </form>
+			</div>
+        </div>
+      </div>
+      <div class = "darkBlock">
+      </div>
+    </div>
+  </div> 
+  <script>
+    const formContainer = document.querySelector('.form'),
+          formItself = formContainer.querySelectorAll('.formItself'),
+          submitInput = formItself[0].querySelector('input[type="submit]"');
+
+    function getData() {
+      //e.preventDefault(formItself[0]);
+      //var formData = new FormData(form[0]);
+      height = document.getElementById("tank").value;
+      light = document.getElementById("lights").value;
+      height = Math.round(height/3)-2;
+      find(height, light);
+    }
+
+    function CSVToArray( strData, strDelimiter ){
+        // Check to see if the delimiter is defined. If not,
+        // then default to comma.
+        strDelimiter = (strDelimiter || ",");
+
+        // Create a regular expression to parse the CSV values.
+        var objPattern = new RegExp(
+            (
+                // Delimiters.
+                "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+
+                // Quoted fields.
+                "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+
+                // Standard fields.
+                "([^\"\\" + strDelimiter + "\\r\\n]*))"
+            ),
+            "gi"
+            );
+
+
+        // Create an array to hold our data. Give the array
+        // a default empty first row.
+        var arrData = [[]];
+
+        // Create an array to hold our individual pattern
+        // matching groups.
+        var arrMatches = null;
+
+
+        // Keep looping over the regular expression matches
+        // until we can no longer find a match.
+        while (arrMatches = objPattern.exec( strData )){
+
+            // Get the delimiter that was found.
+            var strMatchedDelimiter = arrMatches[ 1 ];
+
+            // Check to see if the given delimiter has a length
+            // (is not the start of string) and if it matches
+            // field delimiter. If id does not, then we know
+            // that this delimiter is a row delimiter.
+            if (
+                strMatchedDelimiter.length &&
+                strMatchedDelimiter !== strDelimiter
+                ){
+
+                // Since we have reached a new row of data,
+                // add an empty row to our data array.
+                arrData.push( [] );
+
+            }
+
+            var strMatchedValue;
+
+            // Now that we have our delimiter out of the way,
+            // let's check to see which kind of value we
+            // captured (quoted or unquoted).
+            if (arrMatches[ 2 ]){
+
+                // We found a quoted value. When we capture
+                // this value, unescape any double quotes.
+                strMatchedValue = arrMatches[ 2 ].replace(
+                    new RegExp( "\"\"", "g" ),
+                    "\""
+                    );
+
+            } else {
+
+                // We found a non-quoted value.
+                strMatchedValue = arrMatches[ 3 ];
+
+            }
+
+
+            // Now that we have our value string, let's add
+            // it to the data array.
+            arrData[ arrData.length - 1 ].push( strMatchedValue );
+        }
+
+        // Return the parsed data.
+        return( arrData );
+    }
+
+var lightArr = CSVToArray('BeamsWork DA FSPEC,133,96,70,64,50,42\nBeamsWork EA FSPEC,46,36,28,23,16,10\nNICREW SkyLED,106,81,58,40,25,17\nNICREW ClassicLED,115,80,63,47,33,19\nONF Flat Nano,145,91,74,56,39,25\nChihiros RGB,124,87,67,54,47,36\nAqueon Clip-On LED,152,87,64,52,41,30\nFluval Plant Nano,153,85,68,57,45,34\nTwinstar E-series,204,159,134,117,98,82\nTwinstar S-series,273,218,183,165,140,117\nTwinstar B-series,182,126,105,84,66,43',",")
+
+var plantArr = CSVToArray('Anubias sp.,1,Epiphyte\nAlternanthera sp.,2,Stem\nAponogeton sp.,2,Bulb\nBacopa sp.,1,Stem\nBolbitis heudelotii,2,Epiphyte\nBucephalandra sp.,1,Epiphyte\nCabomba aquatica,1,Stem\nCeratophyllum sp.,1,Stem\nCeratopteris thalictroides,1,Rosette\nCrinum sp.,1,Bulb\nCryptocoryne sp.,1,Rosette\nEchinodorus sp.,2,Rosette\nHemianthus sp.,3,Carpeting\nHydrocotyle sp.,2,Stem\nHygrophila sp.,2,Stem\nLilaeopsis sp.,2,Carpeting\nLimnophila sp.,1,Stem\nLobeia cardinalis,1,Stem\nLudwigia sp.,2,Stem\nMicranthemum sp.,2,Carpeting\nMicrosorum pteropus,1,Epiphyte\nMyriophyllum sp.,2,Stem\nNymphaea/Nymphoides sp.,1,Bulb\nRotala sp.,2,Stem\nVallisneria sp.,1,Runner\nSagittaria sp.,1,Runner\nTaxiphyllum/Vesicularia sp.,1,Epiphyte\nUtricularia graminifolia,3,Carpeting\nEriocaulon sp.,3,Rosette\nGlossostigma elatinoides,3,Carpeting',',')
+
+newplantArr1 = ['Anubias sp.',
+'Bacopa sp.',
+'Bucephalandra sp.',
+'Cabomba aquatica',
+'Ceratophyllum sp.',
+'Ceratopteris thalictroides',
+'Crinum sp.',
+'Bacopa sp.',
+'Bucephalandra sp.',
+'Cabomba aquatica']
+
+newplantArr2 = ['Alternanthera sp.',
+'Aponogeton sp.',
+'Bolbitis heudelotii',
+'Echinodorus sp.',
+'Hydrocotyle sp.',
+'Hygrophila sp.',
+'Lilaeopsis sp.',
+'Ludwigia sp.',
+'Micranthemum sp.',
+'Myriophyllum sp.',
+'Rotala sp.']
+
+newplantArr3 = ['Hemianthus sp.',
+'Utricularia graminifolia',
+'Eriocaulon sp.',
+'Glossostigma elatinoides','Hemianthus sp.',
+'Utricularia graminifolia',
+'Eriocaulon sp.',
+'Glossostigma elatinoides','Hemianthus sp.',
+'Utricularia graminifolia']    
+    
+function lightCategory(parvalue){
+  if (parvalue < 30){
+    var num = Math.floor(Math.random() * 10);
+    alert(newplantArr1[num]);//low
+  }else if (parvalue < 50) {
+    var num = Math.floor(Math.random() * 10);
+    alert(newplantArr2[num])//mid
+  }else {
+    var num = Math.floor(Math.random() * 10);
+    alert(newplantArr3[num])//high
+  }
+}
+
+function display(something) {
+  alert(something);
+}
+    
+function find(tank, lights) {
+  var query=lights;
+  const rowd = lightArr.findIndex(arr => arr.includes(query));
+  var parvalue = lightArr[rowd][tank];
+  lightCategory(parvalue);
+}
+
+
+//Change this to smth that makes sense
+//console.log(outputPlants(lightCategory));
+  </script>
+    
+  </script>
+
+ <!--
+This script places a badge on your repl's full-browser view back to your repl's cover page. Try various colors for the theme: dark, light, red, orange, yellow, lime, green, teal, blue, blurple, magenta, pink!
+-->
+<script src="https://replit.com/public/js/replit-badge.js" theme="blue" defer></script> 
+</body>
+
+</html>
